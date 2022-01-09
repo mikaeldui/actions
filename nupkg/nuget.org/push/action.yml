@@ -21,7 +21,7 @@ runs:
         path: ${{ inputs.path }}
       
     - name: Push Package to NuGet.org
-      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicates
+      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       shell: bash
       
     - name: Get NuGet.org Package HTML URL
