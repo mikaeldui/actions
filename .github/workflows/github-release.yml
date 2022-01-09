@@ -5,7 +5,7 @@ on:
       artifact_name:
         description: The name of the nupkg artifact
         type: string
-        default: nupkg  
+        default: nupkg
 jobs:
   release:
     name: 'Create GitHub Release'
@@ -41,10 +41,9 @@ jobs:
           name: ${{ steps.version.outputs.version }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
           body: |
-            You can install [this specific version from NuGet.org](https://www.nuget.org/packages/${{ steps.package_info.outputs.name }}/${{ steps.package_info.outputs.version }}) 
-            or [GitHub Packages](${{ steps.github_packages_version.outputs.html_url }}) using either of these commands:
+            You can install this specific version from [NuGet.org][nuget.org-package] or [GitHub Packages][github-package] using either of these commands:
 
-            Using **Package Manager Console**:
+            Using the **Package Manager Console**:
 
                 PM> Install-Package ${{ steps.package_info.outputs.name }} --Version ${{ steps.package_info.outputs.version }}
 
@@ -52,6 +51,7 @@ jobs:
 
                 dotnet add package ${{ steps.package_info.outputs.name }} --version ${{ steps.package_info.outputs.version }}
 
-            But it's preferable to use **floating versions**, see [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning#floating-version-resolutions).
+            But it's preferable to use **floating versions**, see the [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning#floating-version-resolutions).
 
-          #  ${{ steps.tag_version.outputs.changelog }}
+            [github-package]: ${{ steps.github_packages_version.outputs.html_url }}
+            [nuget.org-package]: https://www.nuget.org/packages/${{ steps.package_info.outputs.name }}/${{ steps.package_info.outputs.version }}
