@@ -1,0 +1,30 @@
+name: NuGet.org Deployment
+on: 
+  workflow_call:      
+    secrets:
+      NUGET_ORG_API_KEY:
+        required: true
+jobs:
+  push:
+    name: 'Push to NuGet.org'
+    runs-on: ubuntu-latest
+    environment: 
+      name: nuget.org
+      url: ${{ steps.nuget_org.outputs.url}}
+    steps:
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Download NuGet Package Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nupkg
+        
+      - name: Push
+        uses: mikaeldui/actions/nupkg/nuget.org/pushg@main
+        id: nuget_org
+        with:
+          NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}

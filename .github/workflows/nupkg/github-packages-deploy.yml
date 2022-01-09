@@ -1,0 +1,33 @@
+name: GitHub Packages Deploy
+on: 
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: The name of the artifact to push
+        type: string
+        required: true
+        default: nupkg
+jobs:
+  push:
+    name: 'Push to GitHub Packages'
+    runs-on: ubuntu-latest
+    environment: 
+      name: github-packages
+      url: ${{ steps.github.outputs.url }}
+    steps:
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Download NuGet Package Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nupkg
+      
+      - name: Push
+        uses: mikaeldui/actions/nupkg/github-packages/push@main
+        id: github
+        with:
+          GITHUB_TOKEN: ${{ github.token }}

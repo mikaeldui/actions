@@ -1,0 +1,58 @@
+name: Create GitHub Release for NuGet Package
+description: Also tags the branch with the NuGet package version.
+on: 
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: The name of the nupkg artifact
+        required: true
+        default: nupkg
+jobs:
+  release:
+    name: 'Create GitHub Release'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Download NuGet Package
+        uses: actions/download-artifact@v2
+        with:
+          name: nupkg   
+      
+      - name: Get Package Info
+        uses: mikaeldui/actions/nupkg/info@main
+        id: package_info
+        
+      - name: Get Github Packages Version
+        uses: mikaeldui/actions/nupkg/github-packages/version@main
+        id: github_packages_version
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create tag
+        uses: mathieudutour/github-tag-action@v6.0
+        id: tag_version
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.package_info.outputs.version }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.nupkg"
+          token: ${{ github.token }}
+          name: ${{ steps.version.outputs.version }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            You can install [this specific version from NuGet.org](https://www.nuget.org/packages/${{ steps.package_info.outputs.name }}/${{ steps.package_info.outputs.version }}) 
+            or [GitHub Packages](${{ steps.github_packages_version.outputs.html_url }}) using either of these commands:
+
+            Using **Package Manager Console**:
+
+                PM> Install-Package ${{ steps.package_info.outputs.name }} --Version ${{ steps.package_info.outputs.version }}
+
+            Using the **.NET CLI**:
+
+                dotnet add package ${{ steps.package_info.outputs.name }} --version ${{ steps.package_info.outputs.version }}
+
+            But it's preferable to use **floating versions**, see [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning#floating-version-resolutions).
+
+          #  ${{ steps.tag_version.outputs.changelog }}
