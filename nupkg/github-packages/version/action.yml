@@ -47,7 +47,7 @@ runs:
       with:
         path: ${{ inputs.path }}
   
-    - name: Get GitHub Package HTML URL
+    - name: Get GitHub Package Version
       id: url
       uses: actions/github-script@v5
       with:
@@ -62,6 +62,6 @@ runs:
               var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
               Object.keys(packageVersion).forEach(function(key, index) {
-                  console.log("::set-output name=" + key + "::" + packageVersion[index]);
+                  core.setOutput(key, packageVersion[index].ToString());
               });
           }
