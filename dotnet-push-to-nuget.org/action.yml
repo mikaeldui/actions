@@ -1,0 +1,30 @@
+name: .NET Push to NuGet.org
+description: Pushes the package to NuGet.org
+inputs:
+  path: 
+    description: 'The path to the package'
+    required: true
+    default: '*.nupkg'
+  NUGET_ORG_API_KEY:
+    type: string
+outputs:
+  url:
+    description: The URL of the page for this package version
+    value: ${{ steps.url.outputs.url }}
+runs:
+  using: "composite"
+  steps:
+    - name: Get package info
+      uses: mikaeldui/actions/nuget-package-info@main
+      id: package
+      with:
+        path: ${{ inputs.path }}
+      
+    - name: Push Package to NuGet.org
+      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json
+      shell: bash
+      
+    - name: Get NuGet.org Package HTML URL
+      id: url
+      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.name }}"
+      shell: bash
