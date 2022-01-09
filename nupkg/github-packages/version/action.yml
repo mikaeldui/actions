@@ -58,7 +58,10 @@ runs:
             username: "${{ github.repository_owner }}",
           });
 
+          console.log('Length: ' + packageVersions.length);
+
           for (var i = 0; i < packageVersions.length; i++) {
+              console.log('i: ' + i);
               var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;   
               for (var prop in packageVersion) {
