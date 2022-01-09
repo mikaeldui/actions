@@ -1,0 +1,66 @@
+name: Get GitHub Packages Version for nupkg
+description: Get the GitHub Packages version for published a nupkg.
+inputs:
+  path: 
+    description: 'The path to the package pushed to GitHub Actions.'
+    required: true
+    default: '*.nupkg'
+  GITHUB_TOKEN:
+    type: string
+    
+outputs:
+  id:
+    description: 'The package ID, e.g. "3497268".'
+    value: ${{ steps.github_packages.outputs.id }}
+  name:
+    description: 'The name (version) of the package, e.g. "0.3.0".'
+    value: ${{ steps.github_packages.outputs.name }}
+  url:
+    description: The URL to the package.
+    value: ${{ steps.github_packages.outputs.url }}
+  package_html_url:
+    description: The HTML URL to the package.
+    value: ${{ steps.github_packages.outputs.package_html_url }}
+  license:
+    description: The package license.
+    value: ${{ steps.github_packages.outputs.license }}
+  created_at:
+    description: When the package was created.
+    value: ${{ steps.github_packages.outputs.created_at }}
+  updated_at:
+    description: When the package was updated.
+    value: ${{ steps.github_packages.outputs.updated_at }}
+  description:
+    description: The description of the package.
+    value: ${{ steps.github_packages.outputs.description }}
+  html_url:
+    description: The URL of the page for this package version.
+    value: ${{ steps.github_packages.outputs.html_url }}
+    
+runs:
+  using: "composite"
+  steps:
+  
+    - name: Get package info
+      uses: mikaeldui/actions/nuget-package-info@main
+      id: package
+      with:
+        path: ${{ inputs.path }}
+  
+    - name: Get GitHub Package HTML URL
+      id: url
+      uses: actions/github-script@v5
+      with:
+        script: |
+          var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
+            "nuget",
+            ${{ steps.package.outputs.name }},
+            ${{ github.repository_owner }}
+          });
+          
+          for (const packageVersion of packageVersions) {
+              if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
+              Object.keys(packageVersion).forEach(function(key,index) {
+                  console.log("::set-output name=" + key + "::" + packageVersion[index]);
+              });
+          }
