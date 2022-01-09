@@ -52,7 +52,7 @@ runs:
       uses: actions/github-script@v5
       with:
         script: |
-          var packageVersions = github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
+          var packageVersions = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
             package_type: "nuget",
             package_name: "${{ steps.package.outputs.name }}",
             username: "${{ github.repository_owner }}",
@@ -67,10 +67,10 @@ runs:
               console.log('i: ' + i);
               var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;   
-              for (var prop in packageVersion) {
-                  if (Object.prototype.hasOwnProperty.call(packageVersion, prop)) {
-                      core.setOutput(prop, packageVersion[prop].toString());
-                  }
-              }
+              Object.keys(packageVersion).forEach(function(key,index) {
+                  // key: the name of the object key
+                  // index: the ordinal position of the key within the object 
+                  core.setOutput(key, packageVersion[index].toString())
+              });
               return;
           }
