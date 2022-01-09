@@ -1,0 +1,45 @@
+name: .NET Push to GitHub Packages
+description: Pushes the package to GitHub.com
+inputs:
+
+  path: 
+    description: 'The path to the package'
+    required: true
+    default: '*.nupkg'
+  GITHUB_TOKEN:
+    type: string
+    
+outputs:
+  url:
+    description: The URL of the page for this package version
+    value: ${{ steps.url.outputs.result }}
+    
+runs:
+  using: "composite"
+  steps:
+  
+    - name: Get package info
+      uses: mikaeldui/actions/nuget-package-info@main
+      id: package
+      with:
+        path: ${{ inputs.path }}
+  
+    - name: Push package to GitHub.com
+      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/mikaeldui/index.json
+      shell: bash
+      
+    - name: Get GitHub Package HTML URL
+      id: url
+      uses: actions/github-script@v5
+      with:
+        script: |
+          var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
+            "nuget",
+            ${{ steps.package.outputs.name }},
+            ${{ github.repository_owner }}
+          });
+          
+          for (const packageVersion of packageVersions) {
+              if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
+              return packageVersion.html_url;
+          }
