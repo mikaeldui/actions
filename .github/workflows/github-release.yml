@@ -1,5 +1,4 @@
 name: Create GitHub Release for NuGet Package
-description: Also tags the branch with the NuGet package version.
 on: 
   workflow_call:
     inputs:
