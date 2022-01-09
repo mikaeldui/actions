@@ -25,7 +25,7 @@ runs:
   steps:
     - name: Pack
       working-directory: ${{ inputs.project_directory }}
-      run: dotnet pack --configuration ${{ configuration }} --no-build /p:Version=${{ inputs.version }}
+      run: dotnet pack --configuration ${{ inputs.configuration }} --no-build /p:Version=${{ inputs.version }}
       shell: bash
     - name: Upload artifact
       uses: actions/upload-artifact@v2
