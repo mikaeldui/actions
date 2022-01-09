@@ -66,8 +66,10 @@ runs:
               console.log('i: ' + i);
               var packageVersion = packageVersions[i];
               console.dir(packageVersion);
-              if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;   
-              Object.keys(packageVersion).forEach(function(key,index) {
+              if (packageVersion.name != "${{ steps.package.outputs.version}}") continue; 
+              var keys = Object.keys(packageVersion);  
+              console.dir(keys);
+              keys.forEach(function(key,index) {
                   var value = packageVersion[index];
                   if (typeof value === 'string' || value instanceof String)
                     core.setOutput(key, value);
