@@ -1,0 +1,27 @@
+name: 'NuGet: Generate SemVer suffix' 
+description: Uses the GitHub context to generate the SemVer suffix for releases, pull requests and feature branches
+outputs:
+  suffix: 
+    description: 'The SemVer suffix to use'
+    value: ${{ steps.suffix.outputs.result }}
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Get short head SHA
+      id: git
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      
+    - name: "Generate suffix"
+      id: suffix
+      uses: actions/github-script@v5
+      with:
+        script: |
+          if (context.ref == 'refs/head/main && context.eventName == 'push') { # Release
+            return "+${{ steps.git.outputs.sha_short }}"
+          } else if (context.eventName == 'pull_request') { # Pull Request
+            return "-pull-request.${{ context.payLoad.pull_request.number }}+${{ steps.git.outputs.sha_short }}"
+          } else if (context.refstartsWith('refs/heads/features') && context.eventName == 'push') { # Feature Branch
+            return "-feature.${GITHUB_REF##*/}+${{ steps.git.outputs.sha_short }}"
+          }      
+      
