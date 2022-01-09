@@ -60,6 +60,9 @@ runs:
 
           console.log('Length: ' + packageVersions.length);
 
+          console.log('packageVersions: ');
+          console.dir(packageVersions);
+
           for (var i = 0; i < packageVersions.length; i++) {
               console.log('i: ' + i);
               var packageVersion = packageVersions[i];
