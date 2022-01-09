@@ -9,14 +9,51 @@ inputs:
     type: string
   NUGET_ORG_API_KEY:
     type: string
+outputs:
+  github_package_url:
+    description: The URL of the page for this package version
+    value: ${{ steps.github_package_html_url.outputs.result }}
+  nuget_package_url:
+    description: The URL of the page for this package version
+    value: ${{ steps.nuget_org_package.outputs.url }}
 runs:
   using: "composite"
   steps:
-    - name: Push Package to GitHub.com
+    - name: Get package info
+      uses: mikaeldui/actions/nuget-package-info@main
+      id: package
+      with:
+        path: ${{ inputs.path }}
+  
+    - name: Push package to GitHub.com
       if: ${{ inputs.GITHUB_TOKEN != null }}
       run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/mikaeldui/index.json
       shell: bash
+      
+    - name: Get GitHub Package HTML URL
+      if: ${{ inputs.GITHUB_TOKEN != null }}
+      id: github_package_html_url
+      uses: actions/github-script@v5
+      with:
+        script: |
+          var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
+            "nuget",
+            ${{ steps.package.outputs.name }},
+            ${{ github.repository_owner }}
+          });
+          
+          for (const packageVersion of packageVersions) {
+              if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
+              return packageVersion.html_url;
+          }
+      
     - name: Push Package to NuGet.org
       if: ${{ inputs.NUGET_ORG_API_KEY != null }}
       run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json
+      shell: bash
+      
+    - name: Get NuGet.org Package HTML URL      
+      if: ${{ inputs.NUGET_ORG_API_KEY != null }}
+      id: nuget_org_package
+      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.name }}"
       shell: bash
