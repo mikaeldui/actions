@@ -33,10 +33,10 @@ runs:
       uses: actions/github-script@v5
       with:
         script: |
-          var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
+          var packageVersions = github.rest.getAllPackageVersionsForPackageOwnedByUser({
             "nuget",
             "${{ steps.package.outputs.name }}",
-            "${{ github.repository_owner }}"
+            "${{ github.repository_owner }}",
           });
           
           for (const packageVersion of packageVersions) {

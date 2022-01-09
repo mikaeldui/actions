@@ -52,15 +52,15 @@ runs:
       uses: actions/github-script@v5
       with:
         script: |
-          var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
+          var packageVersions = github.rest.getAllPackageVersionsForPackageOwnedByUser({
             "nuget",
             "${{ steps.package.outputs.name }}",
-            "${{ github.repository_owner }}"
+            "${{ github.repository_owner }}",
           });
           
           for (const packageVersion of packageVersions) {
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
-              Object.keys(packageVersion).forEach(function(key,index) {
+              Object.keys(packageVersion).forEach(function(key, index) {
                   console.log("::set-output name=" + key + "::" + packageVersion[index]);
               });
           }
