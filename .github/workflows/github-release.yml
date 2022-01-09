@@ -5,7 +5,6 @@ on:
     inputs:
       artifact_name:
         description: The name of the nupkg artifact
-        required: true
         type: string
         default: nupkg  
 jobs:
