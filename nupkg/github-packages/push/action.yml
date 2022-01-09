@@ -38,8 +38,9 @@ runs:
             package_name: "${{ steps.package.outputs.name }}",
             username: "${{ github.repository_owner }}",
           });
-          
-          for (const packageVersion of packageVersions) {
+
+          for (var i = 0; i < packageVersions.length; i++) {
+              var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
               return packageVersion.html_url;
           }
