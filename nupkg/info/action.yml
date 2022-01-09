@@ -29,6 +29,6 @@ runs:
         result-encoding: string
         script: |
           var matches = "${{ steps.file.outputs.name }}".match(/^(.*?)\.((?:\.?[0-9]+){3,}(?:[-a-z1-9]+?\.?)*)\.nupkg$/);
-          console.log("::set-output name=name::" + matches[1])
-          console.log("::set-output name=version::" + matches[2])
+          core.setOutput("name", matches[1]);
+          core.setOutput("version", matches[2]);
   
