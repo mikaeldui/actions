@@ -35,8 +35,8 @@ runs:
         script: |
           var packageVersions = github.getAllPackageVersionsForPackageOwnedByUser({
             "nuget",
-            ${{ steps.package.outputs.name }},
-            ${{ github.repository_owner }}
+            "${{ steps.package.outputs.name }}",
+            "${{ github.repository_owner }}"
           });
           
           for (const packageVersion of packageVersions) {
