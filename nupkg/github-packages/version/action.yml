@@ -11,31 +11,31 @@ inputs:
 outputs:
   id:
     description: 'The package ID, e.g. "3497268".'
-    value: ${{ steps.github_packages.outputs.id }}
+    value: ${{ steps.github_package.outputs.id }}
   name:
     description: 'The name (version) of the package, e.g. "0.3.0".'
-    value: ${{ steps.github_packages.outputs.name }}
+    value: ${{ steps.github_package.outputs.name }}
   url:
     description: The URL to the package.
-    value: ${{ steps.github_packages.outputs.url }}
+    value: ${{ steps.github_package.outputs.url }}
   package_html_url:
     description: The HTML URL to the package.
-    value: ${{ steps.github_packages.outputs.package_html_url }}
+    value: ${{ steps.github_package.outputs.package_html_url }}
   license:
     description: The package license.
-    value: ${{ steps.github_packages.outputs.license }}
+    value: ${{ steps.github_package.outputs.license }}
   created_at:
     description: When the package was created.
-    value: ${{ steps.github_packages.outputs.created_at }}
+    value: ${{ steps.github_package.outputs.created_at }}
   updated_at:
     description: When the package was updated.
-    value: ${{ steps.github_packages.outputs.updated_at }}
+    value: ${{ steps.github_package.outputs.updated_at }}
   description:
     description: The description of the package.
-    value: ${{ steps.github_packages.outputs.description }}
+    value: ${{ steps.github_package.outputs.description }}
   html_url:
     description: The URL of the page for this package version.
-    value: ${{ steps.github_packages.outputs.html_url }}
+    value: ${{ steps.github_package.outputs.html_url }}
     
 runs:
   using: "composite"
@@ -48,7 +48,7 @@ runs:
         path: ${{ inputs.path }}
   
     - name: Get GitHub Package Version
-      id: url
+      id: github_package
       uses: actions/github-script@v5
       with:
         script: |
@@ -62,6 +62,6 @@ runs:
               var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;              
               Object.keys(packageVersion).forEach(function(key, index) {
-                  core.setOutput(key, packageVersion[index].ToString());
+                  core.setOutput(key, packageVersion[index].toString());
               });
           }
