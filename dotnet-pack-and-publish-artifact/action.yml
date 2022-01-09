@@ -19,8 +19,6 @@ inputs:
     description: 'The name of the artifact'
     required: true
     default: nupkg
-outputs:
-  artifact_name: ${{ inputs.artifact_name }}
 
 runs:
   using: "composite"
