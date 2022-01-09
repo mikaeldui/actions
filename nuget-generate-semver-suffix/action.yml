@@ -23,7 +23,6 @@ runs:
             return "+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'pull_request') {
             return "-pull-request." + context.payLoad.pull_request.number + "+${{ steps.git.outputs.sha_short }}";
-          } else if (context.ref.startsWith('refs/heads/features') && context.eventName == 'push') {
-            return "-feature." + /[^/]*$/.exec(context.ref) + "+${{ steps.git.outputs.sha_short }}";
-          }      
-      
+          } else if (context.eventName == 'push') {       
+            return "-" + context.ref.substring(11).replace('/', '.') + "+${{ steps.git.outputs.sha_short }}";
+          }        
