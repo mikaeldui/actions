@@ -17,6 +17,7 @@ runs:
       id: suffix
       uses: actions/github-script@v5
       with:
+        result-encoding: string
         script: |
           if (context.ref == 'refs/head/main' && context.eventName == 'push') {
             return "+${{ steps.git.outputs.sha_short }}";
