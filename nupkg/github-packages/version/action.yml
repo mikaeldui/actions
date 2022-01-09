@@ -62,12 +62,10 @@ runs:
 
           console.log('Length: ' + packageVersions.length);
 
-          console.log('packageVersions: ');
-          console.dir(packageVersions);
-
           for (var i = 0; i < packageVersions.length; i++) {
               console.log('i: ' + i);
               var packageVersion = packageVersions[i];
+              console.dir(packageVersion);
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;   
               Object.keys(packageVersion).forEach(function(key,index) {
                   var value = packageVersion[index];
