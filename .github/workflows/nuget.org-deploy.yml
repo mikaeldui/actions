@@ -29,7 +29,7 @@ jobs:
           name: ${{ inputs.artifact_name }}
         
       - name: Push
-        uses: mikaeldui/actions/nupkg/nuget.org/pushg@main
+        uses: mikaeldui/actions/nupkg/nuget.org/push@main
         id: nuget_org
         with:
           NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}

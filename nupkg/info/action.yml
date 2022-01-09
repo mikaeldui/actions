@@ -24,7 +24,7 @@ runs:
       
     - name: Parse Package
       id: package
-      uses: actions/github-script@5
+      uses: actions/github-script@v5
       with:
         result-encoding: string
         script: |
