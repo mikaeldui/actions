@@ -52,11 +52,13 @@ runs:
       uses: actions/github-script@v5
       with:
         script: |
-          var packageVersions = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
+          var response = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
             package_type: "nuget",
             package_name: "${{ steps.package.outputs.name }}",
             username: "${{ github.repository_owner }}",
           });
+
+          var packageVersions = response.data;
 
           console.log('Length: ' + packageVersions.length);
 
