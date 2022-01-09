@@ -4,21 +4,33 @@ inputs:
   version: 
     description: 'The version of the package'
     required: true
-  path:
+  project_directory:
     description: 'The path of the package'
     required: true
+  configuration:
+    description: 'The build configuration'
+    required: true
+    default: Release
+  relative_package_path:
+    description: 'The relative path to the package from the project directory'
+    required: true
+    default: '/bin/Release/*.nupkg
+  artifact_name:
+    description: 'The name of the artifact'
+    required: true
+    default: nupkg
 outputs:
-  artifact_name: nupkg
+  artifact_name: ${{ inputs.artifact_name }}
 
 runs:
   using: "composite"
   steps:
     - name: Pack
-      working-directory: ./RiotGames.Client
-      run: dotnet pack --configuration Release --no-build /p:Version=${{ inputs.version }}
+      working-directory: ${{ inputs.project_directory }}
+      run: dotnet pack --configuration ${{ configuration }} --no-build /p:Version=${{ inputs.version }}
       shell: bash
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: ${{ inputs.path }}
+        path: ${{ inputs.project_directory }}${{ inputs.path }}
