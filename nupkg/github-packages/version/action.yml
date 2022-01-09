@@ -70,9 +70,9 @@ runs:
               var packageVersion = packageVersions[i];
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue;   
               Object.keys(packageVersion).forEach(function(key,index) {
-                  // key: the name of the object key
-                  // index: the ordinal position of the key within the object 
-                  core.setOutput(key, packageVersion[index].toString())
+                  var value = packageVersion[index];
+                  if (typeof value === 'string' || value instanceof String)
+                    core.setOutput(key, value);
               });
               return;
           }
