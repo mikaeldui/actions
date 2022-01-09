@@ -19,7 +19,7 @@ runs:
   steps:
   
     - name: Get package info
-      uses: mikaeldui/actions/nuget-package-info@main
+      uses: mikaeldui/actions/nupkg/info@main
       id: package
       with:
         path: ${{ inputs.path }}

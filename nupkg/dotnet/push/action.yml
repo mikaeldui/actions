@@ -23,13 +23,13 @@ runs:
     - name: Push package to GitHub.com
       if: ${{ inputs.GITHUB_TOKEN != null }}
       id: github_packages
-      uses: mikaeldui/actions/dotnet-push-to-github@main
+      uses: mikaeldui/actions/nupkg/github-packages/push@main
       with:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       
     - name: Push Package to NuGet.org
       if: ${{ inputs.NUGET_ORG_API_KEY != null }}
       id: nuget_org
-      uses: mikaeldui/actions/dotnet-push-to-nuget.org@main
+      uses: mikaeldui/actions/nupkg/nuget.org/push@main
       with:
         NUGET_ORG_API_KEY: ${{ inputs.NUGET_ORG_API_KEY }}
