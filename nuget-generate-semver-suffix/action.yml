@@ -11,6 +11,7 @@ runs:
     - name: Get short head SHA
       id: git
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      shell: bash
       
     - name: "Generate suffix"
       id: suffix
