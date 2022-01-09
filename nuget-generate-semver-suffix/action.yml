@@ -18,10 +18,8 @@ runs:
       uses: actions/github-script@v5
       with:
         result-encoding: string
-        script: |        
-          console.log(context.ref);
-          console.log(context.eventName);
-          if (context.ref == 'refs/head/main' && context.eventName == 'push') {
+        script: |
+          if (context.ref == 'refs/heads/main' && context.eventName == 'push') {
             return "+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'pull_request') {
             return "-pull-request." + context.payLoad.pull_request.number + "+${{ steps.git.outputs.sha_short }}";
