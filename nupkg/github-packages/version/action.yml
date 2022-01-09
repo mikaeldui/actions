@@ -67,11 +67,9 @@ runs:
               var packageVersion = packageVersions[i];
               console.dir(packageVersion);
               if (packageVersion.name != "${{ steps.package.outputs.version}}") continue; 
-              var keys = Object.keys(packageVersion);  
-              console.dir(keys);
-              keys.forEach(function(key, index) {
+              Object.keys(packageVersion).forEach(function(key, index) {
                   var value = packageVersion[key];
-                  if (typeof value !== 'undefined' && typof value !== 'Object')
+                  if (typeof value !== 'undefined' && typeof value !== 'object')
                     core.setOutput(key, value);
               });
               return;
