@@ -6,7 +6,8 @@ on:
       artifact_name:
         description: The name of the nupkg artifact
         required: true
-        default: nupkg
+        type: string
+        default: nupkg  
 jobs:
   release:
     name: 'Create GitHub Release'
