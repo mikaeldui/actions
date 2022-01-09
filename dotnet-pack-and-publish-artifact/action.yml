@@ -31,4 +31,4 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: ${{ inputs.project_directory }}${{ inputs.path }}
+        path: ${{ inputs.project_directory }}${{ inputs.relative_package_path }}
