@@ -1,6 +1,11 @@
 name: NuGet.org Deployment
 on: 
-  workflow_call:      
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: The name of the nupkg artifact
+        required: true
+        default: nupkg      
     secrets:
       NUGET_ORG_API_KEY:
         required: true
@@ -21,7 +26,7 @@ jobs:
       - name: Download NuGet Package Artifact
         uses: actions/download-artifact@v2
         with:
-          name: nupkg
+          name: ${{ inputs.artifact_name }}
         
       - name: Push
         uses: mikaeldui/actions/nupkg/nuget.org/pushg@main
