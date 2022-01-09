@@ -25,7 +25,7 @@ runs:
         path: ${{ inputs.path }}
   
     - name: Push package to GitHub.com
-      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/mikaeldui/index.json
+      run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/mikaeldui/index.json --skip-duplicates
       shell: bash
       
     - name: Get GitHub Package HTML URL
