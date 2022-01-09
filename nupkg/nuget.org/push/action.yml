@@ -26,5 +26,5 @@ runs:
       
     - name: Get NuGet.org Package HTML URL
       id: url
-      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.name }}"
+      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.version }}"
       shell: bash
