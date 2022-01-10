@@ -1,0 +1,54 @@
+name: .NET Build & Pack
+
+on:
+  workflow_call:
+    inputs:
+      project_directory:
+        description: 'The directory of the project'
+        type: string
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Get next version tag
+      id: tag
+      uses: mikaeldui/actions/create-tag@main
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        dry_run: true
+        
+    - name: Create SemVer suffix
+      id: semver
+      uses: mikaeldui/actions/nupkg/semver-suffix@main
+      
+      # Build & Test
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      shell: bash
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.tag.outputs.version }}${{ steps.semver.outputs.suffix }}
+      shell: bash
+      
+    - name: Test
+      run: dotnet test --no-build --configuration Release --verbosity normal
+      shell: bash
+      
+      # Pack & Publish
+      
+    - name: 'Pack & Publish Artifact'
+      uses: mikaeldui/actions/nupkg/dotnet/pack-and-publish-artifact@main
+      with:
+        version: ${{ steps.tag.outputs.version }}${{ steps.semver.outputs.suffix }}
+        project_directory: ${{ inputs.project_directory }}
