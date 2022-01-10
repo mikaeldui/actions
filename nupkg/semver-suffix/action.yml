@@ -1,5 +1,10 @@
 name: 'NuGet: Generate SemVer suffix' 
 description: Uses the GitHub context to generate the SemVer suffix for releases, pull requests and feature branches
+inputs:
+  default_branch:
+    description: 'Name of default branch, e.g. main'
+    type: string
+    default: main
 outputs:
   suffix: 
     description: 'The SemVer suffix to use'
@@ -19,7 +24,7 @@ runs:
       with:
         result-encoding: string
         script: |
-          if (context.ref == 'refs/heads/main' && context.eventName == 'push') {
+          if (context.ref == 'refs/heads/${{ inputs.default_branch }}' && context.eventName == 'push') {
             return "+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'pull_request') {
             return "-pull-request." + context.payLoad.pull_request.number + "+${{ steps.git.outputs.sha_short }}";
