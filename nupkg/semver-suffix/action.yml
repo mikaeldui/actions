@@ -24,6 +24,7 @@ runs:
       with:
         result-encoding: string
         script: |
+          console.log("Ref: " + context.ref);
           if (context.ref == 'refs/heads/${{ inputs.default_branch }}' && context.eventName == 'push') {
             return "+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'pull_request') {
