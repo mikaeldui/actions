@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: nuget.org
-      url: ${{ steps.nuget_org.outputs.url}}
+      url: ${{ steps.push.outputs.url}}
     outputs:
       url: ${{ steps.push.outputs.url }}
 
