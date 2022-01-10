@@ -1,16 +1,20 @@
 name: 'Create a tag' 
 description: Used for releases
 inputs:
+  custom_tag:
+    description: 'A custom tag'
+    required: false
   release_branch:
     description: 'Name of default branch, e.g. main'
     type: string
     default: ${{ github.event.repository.default_branch }}
   dry_run:
     description: "Don't create the tag"
-    type: bool
-    default: false
+    required: false
+    default: "false"
   GITHUB_TOKEN:
     type: string
+    required: true
 outputs:
   tag: 
     description: 'The tag'
@@ -26,3 +30,4 @@ runs:
         github_token: ${{ inputs.GITHUB_TOKEN }}
         release_branches: ${{ inputs.default_branch }}
         dry_run: ${{ inputs.dry_run }}  
+        custom_tag: ${{ inputs.custom_tag }}
