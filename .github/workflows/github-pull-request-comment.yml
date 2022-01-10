@@ -14,11 +14,12 @@ on:
         type: string
 jobs:
   comment:
-    name: 'Comment'
+    name: 'Pull Request Comment'
     runs-on: ubuntu-latest
     steps:
 
       - name: Download NuGet Package
+        if: ${{ inputs.github_packages_url == null || inputs.nuget_org_url == null }}
         uses: actions/download-artifact@v2
         with:
           name: ${{ inputs.artifact_name }}
