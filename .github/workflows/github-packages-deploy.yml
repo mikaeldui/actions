@@ -18,9 +18,7 @@ jobs:
       name: github-packages
       url: ${{ steps.push.outputs.url }}
     outputs:
-      url:
-        description: The Github Packages URL for the package
-        value: ${{ steps.push.outputs.url }}
+      url: ${{ steps.push.outputs.url }}
 
     steps:
 
