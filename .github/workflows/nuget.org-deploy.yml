@@ -13,6 +13,7 @@ on:
       url:
         description: The NuGet.org URL for the package
         value: ${{ jobs.push.outputs.url }}
+        type: string
 jobs:
   push:
     name: 'Push to NuGet.org'
