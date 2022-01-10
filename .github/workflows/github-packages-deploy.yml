@@ -8,8 +8,8 @@ on:
         default: nupkg  
     outputs:
       url:
-        description: The URL of the page for this package version
-        value: ${{ steps.push.outputs.github_packages_url }}
+        description: The Github Packages URL for the package
+        value: ${{ jobs.push.outputs.url }}
 jobs:
   push:
     name: 'Push to GitHub Packages'
@@ -17,6 +17,11 @@ jobs:
     environment: 
       name: github-packages
       url: ${{ steps.push.outputs.url }}
+    outputs:
+      url:
+        description: The Github Packages URL for the package
+        value: ${{ steps.push.outputs.url }}
+
     steps:
 
       - name: Setup .NET
