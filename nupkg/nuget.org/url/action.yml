@@ -1,0 +1,24 @@
+name: Get NuGet.org URL
+description: Get the NuGet.org URL for the package
+inputs:
+  path: 
+    description: 'The path to the package'
+    required: true
+    default: '*.nupkg'
+outputs:
+  url:
+    description: The URL of the page for this package version
+    value: ${{ steps.url.outputs.url }}
+runs:
+  using: "composite"
+  steps:
+    - name: Get package info
+      uses: mikaeldui/actions/nupkg/info@main
+      id: package
+      with:
+        path: ${{ inputs.path }}
+      
+    - name: Get NuGet.org Package HTML URL
+      id: url
+      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.version }}"
+      shell: bash

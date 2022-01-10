@@ -6,6 +6,11 @@ on:
         description: The name of the nupkg artifact
         type: string
         default: nupkg
+      github_packages_url:
+        description: The GitHub Packages URL for the package
+        type: string
+      nuget_org_url:
+        description: The NuGet.org URL for the package
 jobs:
   release:
     name: 'Create GitHub Release'
@@ -16,16 +21,22 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ inputs.artifact_name }}
-      
+        
+      - name: Get Github Packages URL
+        if: ${{ inputs.github_packages_url == null }}
+        uses: mikaeldui/actions/nupkg/github-packages/version@main
+        id: github
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get NuGet.org URL
+        if: ${{ inputs.nuget_org_url == null }}
+        id: nuget
+        uses: mikaeldui/actions/nupkg/nuget.org/url@main
+
       - name: Get Package Info
         uses: mikaeldui/actions/nupkg/info@main
         id: package_info
-        
-      - name: Get Github Packages Version
-        uses: mikaeldui/actions/nupkg/github-packages/version@main
-        id: github_packages_version
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create tag
         uses: mathieudutour/github-tag-action@v6.0
@@ -53,5 +64,5 @@ jobs:
 
             But it's preferable to use **floating versions**, see the [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning#floating-version-resolutions).
 
-            [github-package]: ${{ steps.github_packages_version.outputs.html_url }}
-            [nuget.org-package]: https://www.nuget.org/packages/${{ steps.package_info.outputs.name }}/${{ steps.package_info.outputs.version }}
+            [github-package]: ${{ inputs.github_packages_url }}${{ steps.github.outputs.html_url }}
+            [nuget.org-package]: ${{ inputs.nuget_org_url }}${{ steps.nuget.outputs.url }}

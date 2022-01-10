@@ -9,6 +9,10 @@ on:
     secrets:
       NUGET_ORG_API_KEY:
         required: true
+    outputs:
+      url:
+        description: The NuGet.org URL for the package
+        value: ${{ steps.push.outputs.url }}
 jobs:
   push:
     name: 'Push to NuGet.org'
@@ -30,6 +34,6 @@ jobs:
         
       - name: Push
         uses: mikaeldui/actions/nupkg/nuget.org/push@main
-        id: nuget_org
+        id: push
         with:
           NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}

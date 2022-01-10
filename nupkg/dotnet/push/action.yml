@@ -12,17 +12,17 @@ inputs:
 outputs:
   github_packages_url:
     description: The URL of the page for this package version
-    value: ${{ steps.github_packages.outputs.url }}
+    value: ${{ steps.github.outputs.url }}
   nuget_org_url:
     description: The URL of the page for this package version
-    value: ${{ steps.nuget_org.outputs.url }}
+    value: ${{ steps.nuget.outputs.url }}
 runs:
   using: "composite"
   steps:
   
     - name: Push package to GitHub.com
       if: ${{ inputs.GITHUB_TOKEN != null }}
-      id: github_packages
+      id: github
       uses: mikaeldui/actions/nupkg/github-packages/push@main
       with:
         path: ${{ inputs.path }}
@@ -30,7 +30,7 @@ runs:
       
     - name: Push Package to NuGet.org
       if: ${{ inputs.NUGET_ORG_API_KEY != null }}
-      id: nuget_org
+      id: nuget
       uses: mikaeldui/actions/nupkg/nuget.org/push@main
       with:
         path: ${{ inputs.path }}

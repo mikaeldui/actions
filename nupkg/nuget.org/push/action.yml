@@ -10,21 +10,17 @@ inputs:
 outputs:
   url:
     description: The URL of the page for this package version
-    value: ${{ steps.url.outputs.url }}
+    value: ${{ steps.nuget.outputs.url }}
 runs:
   using: "composite"
   steps:
-    - name: Get package info
-      uses: mikaeldui/actions/nupkg/info@main
-      id: package
-      with:
-        path: ${{ inputs.path }}
-      
-    - name: Push Package to NuGet.org
+
+    - name: Push
       run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       shell: bash
-      
-    - name: Get NuGet.org Package HTML URL
-      id: url
-      run: echo "::set-output name=url::https://www.nuget.org/packages/${{ steps.package.outputs.name }}/${{ steps.package.outputs.version }}"
-      shell: bash
+
+    - name: Get URL
+      id: nuget
+      uses: mikaeldui/actions/nupkg/nuget.org/url@main
+      with:
+        path: ${{ inputs.path }}

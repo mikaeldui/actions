@@ -11,7 +11,7 @@ inputs:
 outputs:
   url:
     description: The URL of the page for this package version
-    value: ${{ steps.github_package.outputs.html_url }}
+    value: ${{ steps.github.outputs.html_url }}
     
 runs:
   using: "composite"
@@ -22,7 +22,7 @@ runs:
       shell: bash
       
     - name: Get GitHub Package Version
-      id: github_package
+      id: github
       uses: mikaeldui/actions/nupkg/github-packages/version@main
       with:
         path: ${{ inputs.path }}
