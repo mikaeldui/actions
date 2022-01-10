@@ -10,6 +10,7 @@ on:
       url:
         description: The Github Packages URL for the package
         value: ${{ jobs.push.outputs.url }}
+        type: string
 jobs:
   push:
     name: 'Push to GitHub Packages'
