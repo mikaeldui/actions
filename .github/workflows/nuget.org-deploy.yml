@@ -21,9 +21,7 @@ jobs:
       name: nuget.org
       url: ${{ steps.nuget_org.outputs.url}}
     outputs:
-      url:
-        description: The NuGet.org URL for the package
-        value: ${{ steps.push.outputs.url }}
+      url: ${{ steps.push.outputs.url }}
 
     steps:
 
