@@ -1,0 +1,62 @@
+name: Comment on pull request
+on: 
+  workflow_call:
+    inputs:
+      artifact_name:
+        description: The name of the nupkg artifact
+        type: string
+        default: nupkg
+      github_packages_url:
+        description: The GitHub Packages URL for the package
+        type: string
+      nuget_org_url:
+        description: The NuGet.org URL for the package
+        type: string
+jobs:
+  comment:
+    name: 'Comment'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Download NuGet Package
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ inputs.artifact_name }}
+
+      - name: Get Github Packages URL
+        if: ${{ inputs.github_packages_url == null }}
+        uses: mikaeldui/actions/nupkg/github-packages/version@main
+        id: github
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get NuGet.org URL
+        if: ${{ inputs.nuget_org_url == null }}
+        id: nuget
+        uses: mikaeldui/actions/nupkg/nuget.org/url@main
+
+      - name: Package Version
+        uses: mikaeldui/actions/nupkg/info@main
+        id: package
+        
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1        
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            You can install the NuGet Package for this pull request from [NuGet.org][nuget.org] or [GitHub Packages][github-packages] using either of these commands:
+
+            Using the **Package Manager Console** (non-floating version):
+
+                PM> Install-Package ${{ steps.package.outputs.name }} --Version ${{ steps.package.outputs.version }}
+
+            Using the **.NET CLI** (floating version):
+
+                dotnet add package ${{ steps.package.outputs.name }} --version *-pull-request.${{ github.event.pull_request.number }}
+
+            Using a PackageReference (floating version):
+
+                <PackageReference Include="${{ steps.package.outputs.name }}" Version="*-pull-request.${{ github.event.pull_request.number }}" />
+
+            [github-packages]: ${{ inputs.github_packages_url }}${{ steps.github.outputs.html_url }}
+            [nuget.org]: ${{ inputs.nuget_org_url }}${{ steps.nuget.outputs.url }}

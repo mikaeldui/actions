@@ -53,7 +53,7 @@ jobs:
           name: ${{ steps.version.outputs.version }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
           body: |
-            You can install this specific version from [NuGet.org][nuget.org-package] or [GitHub Packages][github-package] using either of these commands:
+            You can install this specific version from [NuGet.org][nuget.org] or [GitHub Packages][github-packages] using either of these commands:
 
             Using the **Package Manager Console**:
 
@@ -65,5 +65,5 @@ jobs:
 
             But it's preferable to use **floating versions**, see the [Microsoft Docs](https://docs.microsoft.com/en-us/nuget/concepts/package-versioning#floating-version-resolutions).
 
-            [github-package]: ${{ inputs.github_packages_url }}${{ steps.github.outputs.html_url }}
-            [nuget.org-package]: ${{ inputs.nuget_org_url }}${{ steps.nuget.outputs.url }}
+            [github-packages]: ${{ inputs.github_packages_url }}${{ steps.github.outputs.html_url }}
+            [nuget.org]: ${{ inputs.nuget_org_url }}${{ steps.nuget.outputs.url }}
