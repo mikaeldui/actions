@@ -41,7 +41,7 @@ jobs:
 
       - name: Create tag
         uses: mikaeldui/actions/create-tag@main
-        id: tag_version
+        id: tag
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.package_info.outputs.version }}
@@ -51,7 +51,7 @@ jobs:
           artifacts: "*.nupkg"
           token: ${{ github.token }}
           name: ${{ steps.version.outputs.version }}
-          tag: ${{ steps.tag_version.outputs.new_tag }}
+          tag: ${{ steps.tag.outputs.tag }}
           body: |
             You can install this specific version from [NuGet.org][nuget.org] or [GitHub Packages][github-packages] using either of these commands:
 
