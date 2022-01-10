@@ -19,6 +19,9 @@ outputs:
   tag: 
     description: 'The tag'
     value: ${{ steps.tag.outputs.new_tag }}
+  version:
+    description: 'Version in tag'
+    value: ${{ steps.version.outputs.version }}
 
 runs:
   using: "composite"
@@ -31,3 +34,10 @@ runs:
         release_branches: ${{ inputs.default_branch }}
         dry_run: ${{ inputs.dry_run }}  
         custom_tag: ${{ inputs.custom_tag }}
+
+    - name: Create version
+      id: version
+      run: |
+        version=$(echo ${{ steps.tag.outputs.new_tag }} | cut -c2-)
+        echo "::set-output name=version::$version"
+      shell: bash
