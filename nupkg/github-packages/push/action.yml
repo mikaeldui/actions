@@ -1,7 +1,6 @@
 name: .NET Push to GitHub Packages
 description: Pushes the package to GitHub.com
 inputs:
-
   path: 
     description: 'The path to the package'
     required: true
@@ -25,3 +24,5 @@ runs:
     - name: Get GitHub Package Version
       id: github_package
       uses: mikaeldui/actions/nupkg/github-packages/version@main
+      with:
+        path: ${{ inputs.path }}
