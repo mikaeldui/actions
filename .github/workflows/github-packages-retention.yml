@@ -44,14 +44,14 @@ jobs:
         package: ${{ fromJSON(needs.scout.outputs.package-names) }}
     steps:
       - name: 'Release retention'
-        uses: mikaeldui/actions/delete-package-versions@main
+        uses: mikaeldui/actions/nupkg/github-packages/delete@main
         with:
           package-name: ${{ matrix.package }}
           versions-to-keep: 10
           version-type: release
           
       - name: 'Pre-release retention'
-        uses: mikaeldui/actions/delete-package-versions@main
+        uses: mikaeldui/actions/nupkg/github-packages/delete@main
         with:
           package-name: ${{ matrix.package }}
           versions-to-keep: 30
