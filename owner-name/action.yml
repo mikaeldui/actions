@@ -1,0 +1,26 @@
+name: 'Get the name of the repo owner' 
+description: Used with template project
+outputs:
+  name: 
+    description: 'Name of the owner'
+    value: ${{ steps.name.outputs.result }}
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Get owner name
+      id: name
+      uses: actions/github-script@v5
+      with:
+        result-encoding: string
+        script: |
+          const query = `query($owner:String!) {
+            user(login:$owner){
+              name
+            }
+          }`
+          const variables = {
+            owner: context.repo.owner
+          }
+          const result = await github.graphql(query, variables)
+          return result.user.name
