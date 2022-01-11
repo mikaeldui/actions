@@ -20,7 +20,7 @@ runs:
   steps:  
   
   - name: 'Release retention'
-    if: ${{ inputs.versions == 'release' }}
+    if: ${{ inputs.version-type == 'release' }}
     uses: actions/delete-package-versions@v2
     with:
       package-name: ${{ inputs.package-name }}
@@ -28,7 +28,7 @@ runs:
       ignore-version: ^((?:\.?[0-9]+){3,}(?:[-a-z0-9]+?\.?)+)$
 
   - name: 'Pre-release retention'
-    if: ${{ inputs.versions == 'pre-release' }}
+    if: ${{ inputs.version-type == 'pre-release' }}
     uses: actions/delete-package-versions@v2
     with:
       package-name: ${{ inputs.package-name }}
@@ -36,7 +36,7 @@ runs:
       delete-only-pre-release-versions: "true" 
       
   - name: 'Retention'
-    if: ${{ inputs.versions == 'both' }}
+    if: ${{ inputs.version-type == 'both' }}
     uses: actions/delete-package-versions@v2
     with:
       package-name: ${{ inputs.package-name }}
