@@ -1,0 +1,42 @@
+name: 'Get or set the repo description' 
+description: Used with template project
+inputs:
+  description:
+    description: 'The description to set'
+    required: false
+outputs:
+  description: 
+    description: 'The current description'
+    value: ${{ steps.description.outputs.result }}    
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Get the description
+      if: ${{ inputs.description == null }}
+      id: description
+      uses: actions/github-script@v5
+      with:
+        result-encoding: string
+        script: |
+          const query = `query($owner:String!,$name:String!) {
+              repository(owner:$owner, name:$name){
+                description
+              }
+          }`
+          const variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo
+          }
+          const result = await github.graphql(query, variables)
+          return result.repository.description
+    - name: Set the description
+      if: ${{ inputs.description != null }}
+      uses: action/github-script@v5
+      with:
+        script: |
+          await github.rest.repos.update({
+            user: context.repo.owner,
+            repo: context.repo.repo,
+            description: '${{ inputs.description }}'
+          })
