@@ -5,6 +5,7 @@ on:
       package-type:
         description: 'One of the package types available'
         default: NUGET
+        type: string
 jobs:
   scout:
     name: 'Get package names'
