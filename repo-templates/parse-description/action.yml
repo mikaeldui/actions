@@ -39,7 +39,7 @@ runs:
           }
           const result = await github.graphql(query, variables)
           const description = result.repository.description
-          const asJson = '{"' + description.replace(/\n/g, '", "').replace(/\: /g, '": "') + '"}';
+          const asJson = '{"' + description.replace(/,\n/g, '", "').replace(/\: /g, '": "') + '"}';
           const descriptionObj = JSON.parse(description);
           core.setOutput("project-name", description.ProjectName);
           core.setOutput("prefix", description.Prefix);
