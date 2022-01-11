@@ -25,7 +25,7 @@ runs:
     with:
       package-name: ${{ inputs.package-name }}
       min-versions-to-keep: ${{ inputs.versions-to-keep }}
-      ignore-version: ^((?:\.?[0-9]+){3,}(?:[-a-z0-9]+?\.?)+)$
+      ignore-versions: ^((?:\.?[0-9]+){3,}(?:[-a-z0-9]+?\.?)+)$
 
   - name: 'Pre-release retention'
     if: ${{ inputs.version-type == 'pre-release' }}
