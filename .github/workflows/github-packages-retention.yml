@@ -30,7 +30,7 @@ jobs:
             }`;
             const variables = {
               owner: context.repo.owner,
-              name: context.repo.name
+              name: context.repo.repo
             }
             const result = await github.graphql(query, variables)
             return result.repository.packages.edges.map(({ node }) => node.name)            
