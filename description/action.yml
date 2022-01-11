@@ -37,7 +37,7 @@ runs:
       with:
         script: |
           await github.rest.repos.update({
-            user: context.repo.owner,
+            owner: context.repo.owner,
             repo: context.repo.repo,
             description: '${{ inputs.description }}'
           })
