@@ -33,7 +33,7 @@ runs:
           return result.repository.description
     - name: Set the description
       if: ${{ inputs.description != null }}
-      uses: action/github-script@v5
+      uses: actions/github-script@v5
       with:
         script: |
           await github.rest.repos.update({
