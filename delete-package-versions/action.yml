@@ -35,7 +35,7 @@ runs:
       min-versions-to-keep: ${{ inputs.versions-to-keep }}
       delete-only-pre-release-versions: "true" 
       
-  - name: 'Pre-release retention'
+  - name: 'Retention'
     if ${{ inputs.versions == 'both' }}
     uses: actions/delete-package-versions@v2
     with:
