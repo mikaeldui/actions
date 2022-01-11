@@ -3,6 +3,7 @@ description: Used with template project
 inputs:
   description:
     description: 'The description to set'
+    type: string
     required: false
 outputs:
   description: 
