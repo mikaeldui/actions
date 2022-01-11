@@ -11,7 +11,7 @@ inputs:
     required: true
     
   versions-to-keep:
-    description: 'Number of versions to keep starting with the latest version. By default keeps no version. To delete all versions set this as 0.
+    description: 'Number of versions to keep starting with the latest version. By default keeps no version. To delete all versions set this as 0.'
     required: false
     default: "-1"
     
