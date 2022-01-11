@@ -28,7 +28,7 @@ runs:
           if (context.ref == 'refs/heads/${{ inputs.default_branch }}' && context.eventName == 'push') {
             return "+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'pull_request') {
-            return "-pull-request." + ${{github.event.number}} + "+${{ steps.git.outputs.sha_short }}";
+            return "-pull-request.${{github.event.number}}+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'push') {       
             return "-" + context.ref.substring(11).replace('/', '.') + "+${{ steps.git.outputs.sha_short }}";
           }        
