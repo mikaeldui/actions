@@ -6,7 +6,7 @@ inputs:
     required: true
   project_directory:
     description: 'The path of the package'
-    required: true
+    required: false
   configuration:
     description: 'The build configuration'
     required: true
