@@ -1,0 +1,21 @@
+name: '.NET Setup' 
+description: 'Sets up the latest version of .NET (6.0.x right now) or the specified one'
+inputs:
+  dotnet-version: 
+    description: 'A specific version of .NET, like 6.0.x'
+    required: false
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Setup the latest .NET version
+      uses: actions/setup-dotnet@v1
+      if: ${{ inputs.dotnet-version == null }}
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Setup specific .NET version
+      uses: actions/setup-dotnet@v1
+      if: ${{ inputs.dotnet-version != null }}
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
