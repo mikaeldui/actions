@@ -1,0 +1,17 @@
+name: '.NET Build' 
+description: 'Runs .NET build with --no-restore'
+inputs:
+  configuration:
+    description: 'The build configuration'
+    required: false
+    default: Release
+  version: 
+    description: 'The product version, like 1.2.3.4-pre-release+1a2b3c4d'
+    required: true
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Build
+      run: dotnet build --no-restore --configuration ${{ inputs.configuration }} /p:Version=${{ inputs.version }}
+      shell: bash
