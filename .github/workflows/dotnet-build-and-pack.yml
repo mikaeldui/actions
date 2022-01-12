@@ -4,9 +4,8 @@ on:
   workflow_call:
     inputs:
       project_directory:
-        description: 'The directory of the project'
+        description: "The directory of the project, if it's not in the root or can't be found."
         type: string
-        required: true
 
 jobs:
   build:
