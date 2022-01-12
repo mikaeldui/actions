@@ -8,10 +8,13 @@ inputs:
   version: 
     description: 'The product version, like 1.2.3.4-pre-release+1a2b3c4d'
     required: true
+  additional-arguments:
+    descirption: 'Any additional arguments'
+    required: false
 
 runs:
   using: "composite"
   steps:  
     - name: Build
-      run: dotnet build --no-restore --configuration ${{ inputs.configuration }} /p:Version=${{ inputs.version }}
+      run: dotnet build --no-restore --configuration ${{ inputs.configuration }} /p:Version=${{ inputs.version }} ${{ inputs.additional-arguments }}
       shell: bash
