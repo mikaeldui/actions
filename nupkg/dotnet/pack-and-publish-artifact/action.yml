@@ -23,9 +23,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Get project directory
+      if: ${{ inputs.project_directory == null }}
+      uses: mikaeldui/actions/nupkg/project-directory@main
+      id: project-directory
   
     - name: Pack
-      working-directory: ${{ inputs.project_directory }}
+      working-directory: ${{ inputs.project_directory }}${{ steps.project-directory.outputs.directory }}
       run: dotnet pack --configuration ${{ inputs.configuration }} --no-build /p:Version=${{ inputs.version }}
       shell: bash
 
@@ -33,4 +37,4 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: ${{ inputs.project_directory }}${{ inputs.relative_package_path }}
+        path: ${{ inputs.project_directory }}${{ steps.project-directory.outputs.directory }}${{ inputs.relative_package_path }}
