@@ -30,5 +30,5 @@ runs:
           } else if (context.eventName == 'pull_request') {
             return "-pull-request.${{github.event.number}}+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'push') {       
-            return "-" + context.ref.substring(11).replaceAll('/', '.') + "+${{ steps.git.outputs.sha_short }}";
+            return "-" + context.ref.substring(11).replace(/\//g, '.') + "+${{ steps.git.outputs.sha_short }}";
           }        
