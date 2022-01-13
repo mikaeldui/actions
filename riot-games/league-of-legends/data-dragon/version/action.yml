@@ -32,9 +32,13 @@ runs:
               res.on('end', function () {
                   if (res.statusCode === 200) {
                       try {
-                          var data = JSON.parse(json);
-                          // data is available here:
-                          core.setOutput("version", data[0]);
+                          const data = JSON.parse(json);
+                          const version = data[0];
+                          
+                          if (/^\d+\.\d+\.\d+$/.test(version))
+                            core.setOutput("version", data[0]);
+                          else
+                            core.setFailed("The data dragon version wasn't valid!);
                       } catch (e) {
                           core.setFailed('Error parsing JSON!');
                       }
