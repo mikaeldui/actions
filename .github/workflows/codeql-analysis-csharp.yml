@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Setup .NET
-      uses: mikaeldui/actions/dotnet/setup@vmain
+      uses: mikaeldui/actions/dotnet/setup@main
     
     - name: Restore dependencies
       run: dotnet restore
