@@ -1,0 +1,21 @@
+# uses: mikaeldui/actions/riot-games/league-of-legends/data-dragon/version@main
+name: 'Data Dragon Version'
+description: 'Get the latest version number of Data Dragon'
+outputs:
+  version: 
+    description: 'The latest version number'
+    value: ${{ steps.version.outputs.result }}    
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Get the description
+      if: ${{ inputs.description == null }}
+      id: version
+      uses: actions/github-script@v5
+      with:
+        result-encoding: string
+        script: |
+          await fetch('https://ddragon.leagueoflegends.com/api/versions.json')
+            .then(response => response.json())
+            .then(data => { return data[0] });
