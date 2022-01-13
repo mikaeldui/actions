@@ -38,7 +38,7 @@ runs:
                           if (/^\d+\.\d+\.\d+$/.test(version))
                             core.setOutput("version", data[0]);
                           else
-                            core.setFailed("The data dragon version wasn't valid!);
+                            core.setFailed("The data dragon version wasn't valid!");
                       } catch (e) {
                           core.setFailed('Error parsing JSON!');
                       }
