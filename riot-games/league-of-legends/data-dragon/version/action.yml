@@ -4,7 +4,7 @@ description: 'Get the latest version number of Data Dragon'
 outputs:
   version: 
     description: 'The latest version number'
-    value: ${{ steps.version.outputs.result }}    
+    value: ${{ steps.version.outputs.version }}    
 
 runs:
   using: "composite"
@@ -24,7 +24,7 @@ runs:
               headers: {'User-Agent': 'GitHubActions/main (https://github.com/mikaeldui/actions/tree/main/riot-games/league-of-legends/data-dragon/version)'}
           };
 
-          return await https.get(options, function (res) {
+          https.get(options, function (res) {
               var json = '';
               res.on('data', function (chunk) {
                   json += chunk;
@@ -34,15 +34,15 @@ runs:
                       try {
                           var data = JSON.parse(json);
                           // data is available here:
-                          return data[0];
+                          core.setOutput("version", data[0]);
                       } catch (e) {
-                          console.log('Error parsing JSON!');
+                          core.setFailed('Error parsing JSON!');
                       }
                   } else {
-                      console.log('Status:', res.statusCode);
+                      core.setFailed('Status: ' + res.statusCode);
                   }
               });
           }).on('error', function (err) {
-                console.log('Error:', err);
+                core.setFailed(err);
           });
       
