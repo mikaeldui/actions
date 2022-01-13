@@ -12,6 +12,6 @@ runs:
       id: directory
       run: |
         project_directory=$(find * -maxdepth 0 -type d | xargs -d $'\n' sh -c 'for arg do find * -maxdepth 0 -type d | grep -wo "$arg"; done' _ \
-        | sort | uniq -c | sort -nr | head  -1 | echo "./$(awk '{print $2}'))"
+        | sort | uniq -c | sort -nr | head  -1 | echo "./$(awk '{print $2}')")
         echo "::set-output name=directory::$(echo $project_directory)"
       shell: bash
