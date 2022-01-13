@@ -16,6 +16,18 @@ runs:
       with:
         result-encoding: string
         script: |
-          await fetch('https://ddragon.leagueoflegends.com/api/versions.json')
-            .then(response => response.json())
-            .then(data => { return data[0] });
+          var request = require('request');        
+          return request.get({
+            url: 'https://ddragon.leagueoflegends.com/api/versions.json',
+            json: true,
+            headers: {'User-Agent': 'GitHubActions/main (https://github.com/mikaeldui/actions/tree/main/riot-games/league-of-legends/data-dragon/version)'}
+          }, (err, res, data) => {
+            if (err) {
+              console.log('Error:', err);
+            } else if (res.statusCode !== 200) {
+              console.log('Status:', res.statusCode);
+            } else {
+              // data is already parsed as JSON:
+              return data[0];
+            }
+         });
