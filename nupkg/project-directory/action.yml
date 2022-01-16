@@ -8,7 +8,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Parse version
+    - name: Find main project directory
       id: directory
       run: |
         project_directory=$(find * -maxdepth 0 -type d | xargs -d $'\n' sh -c 'for arg do find * -maxdepth 0 -type d | grep -wo "$arg"; done' _ \
