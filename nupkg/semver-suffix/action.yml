@@ -34,5 +34,5 @@ runs:
           } else if (context.eventName == 'schedule') {
             return "-schedule" + "+${{ steps.git.outputs.sha_short }}";
           } else {
-            return "-" + context.eventName + "+${{ steps.git.outputs.sha_short }}";
+            return "-" + context.eventName.replace("_", "-") + "+${{ steps.git.outputs.sha_short }}";
           }
