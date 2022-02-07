@@ -31,4 +31,6 @@ runs:
             return "-pull-request.${{github.event.number}}+${{ steps.git.outputs.sha_short }}";
           } else if (context.eventName == 'push') {       
             return "-" + context.ref.substring(11).replace(/\//g, '.') + "+${{ steps.git.outputs.sha_short }}";
-          }        
+          } else if (context.eventName == 'schedule') {
+            return "-schedule" + "+${{ steps.git.outputs.sha_short }}";
+          }
