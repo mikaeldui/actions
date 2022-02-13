@@ -18,7 +18,7 @@ inputs:
    relative_source_package_path:
     description: 'The relative path to the package from the project directory'
     required: true
-    default: ''
+    default: ""
   artifact_name:
     description: 'The name of the artifact'
     required: true
