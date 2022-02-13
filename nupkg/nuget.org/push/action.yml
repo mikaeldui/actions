@@ -7,6 +7,9 @@ inputs:
     default: '*.nupkg'
   NUGET_ORG_API_KEY:
     type: string
+  snupkg:
+    desciption: 'The path of any snupkg'
+    required: false
 outputs:
   url:
     description: The URL of the page for this package version
@@ -17,6 +20,11 @@ runs:
 
     - name: Push
       run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      shell: bash
+    
+    - name: Push snupkg    
+      if: inputs.snupkg != ''
+      run: dotnet nuget push ${{ inputs.snupkg }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       shell: bash
 
     - name: Get URL
