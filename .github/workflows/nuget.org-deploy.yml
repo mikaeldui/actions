@@ -6,6 +6,10 @@ on:
         description: The name of the nupkg artifact
         type: string
         default: nupkg      
+      snupkg_artifact_name:
+        description: 'Path to any snupkg'
+        type: string
+        default: ''
     secrets:
       NUGET_ORG_API_KEY:
         required: true
@@ -34,10 +38,17 @@ jobs:
       - name: Download NuGet Package Artifact
         uses: actions/download-artifact@v2
         with:
-          name: ${{ inputs.artifact_name }}
+          name: ${{ inputs.artifact_name }}          
+          
+      - name: Download NuGet Source Package Artifact
+        uses: actions/download-artifact@v2
+        if: inputs.snupkg_artifact_name != ''
+        with:
+          name: ${{ inputs.snupkg_artifact_name }}
         
       - name: Push
         uses: mikaeldui/actions/nupkg/nuget.org/push@main
         id: push
         with:
           NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
+          snupkg: ${{ inputs.snupkg_artifact_name }}
