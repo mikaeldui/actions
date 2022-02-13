@@ -23,10 +23,10 @@ runs:
       run: dotnet nuget push ${{ inputs.path }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
       shell: bash
     
-    - name: Push snupkg    
-      if: inputs.snupkg != ''
-      run: dotnet nuget push ${{ inputs.snupkg }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-      shell: bash
+   # - name: Push snupkg    
+   #   if: inputs.snupkg != ''
+   #   run: dotnet nuget push ${{ inputs.snupkg }} -k ${{ inputs.NUGET_ORG_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+   #   shell: bash
 
     - name: Get URL
       id: nuget
