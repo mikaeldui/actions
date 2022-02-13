@@ -17,8 +17,8 @@ inputs:
     default: '/bin/Release/*.nupkg'
    relative_source_package_path:
     description: 'The relative path to the package from the project directory'
-    required: true
-    default: '/bin/Release/*.snupkg'
+    required: false
+    default: '' #'/bin/Release/*.snupkg'
   artifact_name:
     description: 'The name of the artifact'
     required: true
@@ -42,5 +42,12 @@ runs:
       with:
         name: nupkg
         path: |
-          ${{ inputs.project_directory }}${{ steps.project-directory.outputs.directory }}${{ inputs.relative_package_path }}
+          ${{ inputs.project_directory }}${{ steps.project-directory.outputs.directory }}${{ inputs.relative_package_path }}          
+    
+    - name: Upload snupkg artifact
+      uses: actions/upload-artifact@v2
+      if: inputs.relative_source_package_path != ''
+      with:
+        name: snupkg
+        path: |
           ${{ inputs.project_directory }}${{ steps.project-directory.outputs.directory }}${{ inputs.relative_source_package_path }}
