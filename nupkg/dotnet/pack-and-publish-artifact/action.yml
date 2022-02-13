@@ -17,7 +17,7 @@ inputs:
     default: '/bin/Release/*.nupkg'
    relative_source_package_path:
     description: 'The relative path to the package from the project directory'
-    required: false
+    required: true
     default: ''
   artifact_name:
     description: 'The name of the artifact'
