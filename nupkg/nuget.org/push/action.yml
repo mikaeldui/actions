@@ -10,6 +10,7 @@ inputs:
   snupkg:
     desciption: 'The path of any snupkg'
     required: false
+    default: ''
 outputs:
   url:
     description: The URL of the page for this package version
