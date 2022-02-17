@@ -35,7 +35,7 @@ jobs:
       shell: bash      
       
     - name: .NET Build
-      uses: mikaeldui/actions/dotnet/build@main
+      uses: mikaeldui/actions/nupkg/dotnet/build@main
       with:
         version: ${{ steps.tag.outputs.version }}${{ steps.semver.outputs.suffix }}
       
