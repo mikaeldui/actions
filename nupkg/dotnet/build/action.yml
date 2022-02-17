@@ -1,0 +1,27 @@
+name: '.NET Build' 
+description: 'Runs .NET build with --no-restore'
+inputs:
+  configuration:
+    description: 'The build configuration'
+    required: false
+    default: Release
+  version: 
+    description: 'The product version, like 1.2.3.4-pre-release+1a2b3c4d'
+    required: true
+  additional-arguments:
+    descirption: 'Any additional arguments'
+    required: false
+
+runs:
+  using: "composite"
+  steps:  
+    - name: Add Source Link
+      shell: bash
+      run: dotnet add package Microsoft.SourceLink.GitHub --version * --privateassets all
+  
+    - name: Build
+      uses: mikaeldui/actions/dotnet/build@main
+      with:
+        configuration: ${{ inputs.configuration }}
+        version: ${{ inputs.version }}
+        additional-arguments: /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:PublishRepositoryUrl=true /p:EmbedUntrackedSources=true ${{ inputs.additional-arguments }}
