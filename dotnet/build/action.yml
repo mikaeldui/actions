@@ -16,5 +16,5 @@ runs:
   using: "composite"
   steps:  
     - name: Build
-      run: dotnet build --no-restore --configuration ${{ inputs.configuration }} /p:Version=${{ inputs.version }} ${{ inputs.additional-arguments }} /p:ContinuousIntegrationBuild=true /p:DebugType=embedded
+      run: dotnet build --no-restore --configuration ${{ inputs.configuration }} /p:Version=${{ inputs.version }} ${{ inputs.additional-arguments }} /p:ContinuousIntegrationBuild=true
       shell: bash
