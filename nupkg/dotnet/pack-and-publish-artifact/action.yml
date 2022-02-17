@@ -46,7 +46,6 @@ runs:
     
     - name: Upload snupkg artifact
       uses: actions/upload-artifact@v2
-      continue-on-error: true
       with:
         name: snupkg
         path: |
