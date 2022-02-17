@@ -9,7 +9,7 @@ on:
       snupkg_artifact_name:
         description: 'Path to any snupkg'
         type: string
-        default: ''
+        default: snupkg
     secrets:
       NUGET_ORG_API_KEY:
         required: true
@@ -42,7 +42,6 @@ jobs:
           
       - name: Download NuGet Source Package Artifact
         uses: actions/download-artifact@v2
-        if: inputs.snupkg_artifact_name != ''
         with:
           name: ${{ inputs.snupkg_artifact_name }}
         
